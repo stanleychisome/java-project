@@ -1,0 +1,261 @@
+# METEORIX WEATHER DASHBOARD - DEFENSE NOTES
+
+## What is this project?
+
+METEORIX is a Weather Dashboard Application built with:
+
+* HTML (Structure)
+* Tailwind CSS (Design)
+* JavaScript (Functionality)
+* OpenWeatherMap API (Weather Data)
+* LocalStorage (Save Search History)
+
+The application allows users to search for any city and view:
+
+* Current Temperature
+* Humidity
+* Wind Speed
+* Weather Condition
+* Weather Icon
+* 5-Day Forecast
+
+---
+
+# How The Project Works
+
+User enters a city name
+
+↓
+
+JavaScript captures the city
+
+↓
+
+API request is sent to OpenWeatherMap
+
+↓
+
+API returns weather data
+
+↓
+
+JavaScript processes the data
+
+↓
+
+Weather information is displayed
+
+↓
+
+City is saved in LocalStorage
+
+---
+
+# Main Sections In HTML
+
+## Header
+
+Displays the application name and description.
+
+## Search Form
+
+Allows users to enter a city name.
+
+## Recent Searches
+
+Displays previously searched cities.
+
+## Weather Dashboard
+
+Displays current weather information.
+
+## Forecast Section
+
+Displays the 5-day forecast.
+
+## Loading Spinner
+
+Shows while data is being fetched.
+
+## Error Alert
+
+Displays errors when something goes wrong.
+
+---
+
+# Main JavaScript Functions
+
+## searchWeather()
+
+Gets the city entered by the user.
+
+---
+
+## executeDataPipeline()
+
+The most important function.
+
+It controls the entire application.
+
+Steps:
+
+1. Show Loading
+2. Fetch Weather Data
+3. Fetch Forecast Data
+4. Display Weather
+5. Display Forecast
+6. Save Search
+7. Hide Loading
+
+---
+
+## fetchWeatherData()
+
+Fetches current weather information from the API.
+
+---
+
+## fetchForecastData()
+
+Fetches the 5-day forecast from the API.
+
+---
+
+## displayWeather()
+
+Displays:
+
+* City Name
+* Temperature
+* Humidity
+* Wind Speed
+* Weather Condition
+* Weather Icon
+
+---
+
+## displayForecast()
+
+Creates and displays the forecast cards.
+
+---
+
+## saveRecentSearch()
+
+Saves searched cities in LocalStorage.
+
+---
+
+## loadRecentSearches()
+
+Loads stored cities from LocalStorage.
+
+---
+
+# Important Concepts
+
+## API
+
+An API allows applications to communicate and exchange data.
+
+Example:
+
+My app communicates with OpenWeatherMap to get weather information.
+
+---
+
+## Fetch API
+
+Used to request data from an external server.
+
+Example:
+
+fetch(url)
+
+---
+
+## Async/Await
+
+Used to wait for API responses before continuing execution.
+
+---
+
+## DOM Manipulation
+
+Updating HTML elements using JavaScript.
+
+Example:
+
+Changing temperature from:
+
+22°C
+
+to
+
+30°C
+
+without refreshing the page.
+
+---
+
+## LocalStorage
+
+Stores data inside the browser.
+
+Used to save recent searches.
+
+---
+
+## Event Listener
+
+Listens for user actions.
+
+Example:
+
+Clicking the Search button.
+
+---
+
+# Common Defense Questions
+
+## What is an API?
+
+An API is a bridge that allows two applications to communicate and exchange data.
+
+---
+
+## Why did you use OpenWeatherMap API?
+
+To get real-time weather and forecast information.
+
+---
+
+## Why did you use JavaScript?
+
+To add functionality and interact with the API.
+
+---
+
+## Why did you use Tailwind CSS?
+
+To create a responsive and modern design quickly.
+
+---
+
+## Why did you use LocalStorage?
+
+To save recent searches even after refreshing the page.
+
+---
+
+## What is the most important function?
+
+executeDataPipeline()
+
+Because it controls the entire workflow of the application.
+
+---
+
+# One-Sentence Project Summary
+
+METEORIX is a responsive weather dashboard that uses HTML, Tailwind CSS, JavaScript, OpenWeatherMap API, Fetch API, Async/Await, DOM Manipulation, and LocalStorage to provide real-time weather information and a 5-day forecast.

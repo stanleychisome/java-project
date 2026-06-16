@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Weather Analytics Dashboard</title>
+    <!-- Tailwind CSS CDN for Modern Styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome CDN for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom smooth transitions for interactive elements */
+        .transition-all-300 {
+            transition: all 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen font-sans antialiased">
+
+    <!-- Main Container -->
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        
+        <!-- Header Section -->
+        <header class="text-center mb-10">
+            <h1 class="text-4xl font-extrabold tracking-tight bg-gradient-to-r from-blue-400 to-teal-400 bg-clip-text text-transparent mb-2">
+                <i class="fa-solid fa-cloud-sun-rain mr-2"></i>METEORIX
+            </h1>
+            <p class="text-slate-400 text-sm md:text-base">Real-Time Weather Analytics & 5-Day Predictive Forecast</p>
+        </header>
+
+        <!-- Dashboard Grid Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            
+            <!-- Left Column: Search & History Control Panel (1 Column wide on large screens) -->
+            <div class="lg:col-span-1 space-y-6">
+                <!-- Search Card -->
+                <div class="bg-slate-800 p-6 rounded-2xl shadow-xl border border-slate-700">
+                    <h2 class="text-lg font-semibold mb-4 text-slate-200">Search Location</h2>
+                    <form id="searchForm" class="space-y-3">
+                        <div class="relative">
+                            <i class="fa-solid fa-location-dot absolute left-3 top-3.5 text-slate-400"></i>
+                            <input 
+                                type="text" 
+                                id="cityInput" 
+                                placeholder="Enter city name..." 
+                                class="w-full bg-slate-900 border border-slate-700 rounded-xl py-2.5 pl-10 pr-4 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 text-sm transition-all-300"
+                                required
+                            >
+                        </div>
+                        <button 
+                            type="submit" 
+                            class="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium py-2.5 rounded-xl transition-all-300 shadow-lg shadow-blue-500/20 text-sm flex items-center justify-center gap-2"
+                        >
+                            <i class="fa-solid fa-magnifying-glass"></i> Search Weather
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Recent Searches Card -->
+                <div class="bg-slate-800 p-6 rounded-2xl shadow-xl border border-slate-700">
+                    <h2 class="text-lg font-semibold mb-3 text-slate-200">Recent Searches</h2>
+                    <div id="recentSearchesContainer" class="space-y-2">
+                        <!-- Dynamically populated by JavaScript -->
+                        <p class="text-xs text-slate-500 italic">No recent searches</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Live Data Display (3 Columns wide on large screens) -->
+            <div class="lg:col-span-3 space-y-8">
+                
+                <!-- Feedback Elements: Loading Spinner & Error Alerts -->
+                <!-- Loading Animation -->
+                <div id="loadingSpinner" class="hidden flex-col items-center justify-center p-12 bg-slate-800 rounded-2xl border border-slate-700">
+                    <div class="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent mb-4"></div>
+                    <p class="text-slate-400 text-sm">Fetching structural meteorological data...</p>
+                </div>
+
+                <!-- Error Alert Box -->
+                <div id="errorAlert" class="hidden bg-red-900/30 border border-red-500 text-red-200 p-4 rounded-xl flex items-center gap-3">
+                    <i class="fa-solid fa-triangle-exclamation text-xl text-red-400"></i>
+                    <div>
+                        <span class="font-bold">Execution Error:</span> 
+                        <span id="errorMessage">The requested location could not be verified by OpenWeatherMap API.</span>
+                    </div>
+                </div>
+
+                <!-- Main Meteorological Dashboard Data (Hidden until loaded) -->
+                <div id="weatherDashboardContent" class="hidden space-y-8">
+                    
+                    <!-- Current Weather Primary Status Card -->
+                    <div class="bg-gradient-to-br from-slate-800 to-slate-850 p-6 md:p-8 rounded-2xl shadow-xl border border-slate-700/50 relative overflow-hidden">
+                        <!-- Decorative background glow -->
+                        <div class="absolute -right-10 -top-10 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl"></div>
+                        
+                        <!-- Top Row: Meta-info & Timestamp -->
+                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-700/60 pb-4 mb-6">
+                            <div>
+                                <h2 id="currentCityName" class="text-2xl md:text-3xl font-bold text-white tracking-wide">London, GB</h2>
+                                <p id="currentDateTime" class="text-xs md:text-sm text-slate-400 mt-1">Tuesday, June 16, 2026</p>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <img id="currentWeatherIcon" src="" alt="Weather Icon" class="w-16 h-16 object-contain">
+                                <span id="currentCondition" class="text-lg font-medium text-teal-400 uppercase tracking-wider text-sm md:text-base">Clouds</span>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Row: Primary Metrics & Secondary Metrics Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                            <!-- Large Temperature Readout -->
+                            <div class="md:col-span-1">
+                                <div class="flex items-start">
+                                    <span id="currentTemp" class="text-6xl md:text-7xl font-black text-white tracking-tighter">22</span>
+                                    <span class="text-3xl font-light text-blue-400 mt-1">°C</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Telemetry Metrics Cards -->
+                            <div class="md:col-span-2 grid grid-cols-2 gap-4">
+                                <!-- Humidity Telemetry Box -->
+                                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-700/40 flex items-center gap-4">
+                                    <div class="p-3 bg-blue-500/10 text-blue-400 rounded-lg text-xl">
+                                        <i class="fa-solid fa-droplet"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-slate-400 font-medium uppercase tracking-wider">Humidity</p>
+                                        <p id="currentHumidity" class="text-lg font-bold text-slate-100">64%</p>
+                                    </div>
+                                </div>
+                                <!-- Wind Speed Telemetry Box -->
+                                <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-700/40 flex items-center gap-4">
+                                    <div class="p-3 bg-teal-500/10 text-teal-400 rounded-lg text-xl">
+                                        <i class="fa-solid fa-wind"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-slate-400 font-medium uppercase tracking-wider">Wind Speed</p>
+                                        <p id="currentWindSpeed" class="text-lg font-bold text-slate-100">5.1 m/s</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 5-Day Predictive Forecast Subsection -->
+                    <div>
+                        <h3 class="text-xl font-bold mb-4 text-slate-200 tracking-wide flex items-center gap-2">
+                            <i class="fa-solid fa-calendar-days text-blue-500"></i> 5-Day Predictive Forecast
+                        </h3>
+                        <!-- Grid layout for the 5 forecast cards -->
+                        <div id="forecastContainer" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+                            <!-- Cards are injected programmatically by JavaScript -->
+                        </div>
+                    </div>
+
+                </div> <!-- End of Weather Content Dashboard -->
+
+            </div> <!-- End of Right Column -->
+        </div> <!-- End of Grid -->
+    </div> <!-- End of Main Container -->
+
+    <!-- Core Javascript Linkage -->
+    <script src="script.js"></script>
+</body>
+</html>
