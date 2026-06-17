@@ -42,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadRecentSearches();
     
     // Seed system with an initial view using a default global business city
-    executeDataPipeline("New York");
+    executeDataPipeline("awka");
 });
 
 // ==========================================
